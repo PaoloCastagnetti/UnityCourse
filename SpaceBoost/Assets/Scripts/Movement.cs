@@ -8,9 +8,11 @@ public class Movement : MonoBehaviour {
     float rotationThrust = 100f;
 
     Rigidbody rb;
+    AudioSource audioSource;
 
     void Start() {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update() {
@@ -21,7 +23,17 @@ public class Movement : MonoBehaviour {
     //Process the thrusting of the rocket
     void ProcessThrust() {
         if (Input.GetKey(KeyCode.Space)) {
+
+            // Adding force to the rocket
             rb.AddRelativeForce(Vector3.up * Time.deltaTime * mainThrust);
+
+            // Playing SFX
+            if (!audioSource.isPlaying) {
+                audioSource.Play();
+            }
+        }
+        else {
+            audioSource.Stop();
         }
     }
 
