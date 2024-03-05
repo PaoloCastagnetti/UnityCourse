@@ -16,12 +16,18 @@ public class CollisionHandler : MonoBehaviour {
     private Movement movementComponent;
     private AudioSource audioSource;
 
+    // STATE - private instance 
+    private bool isTransitioning = false;
+
     private void Start() {
         movementComponent = GetComponent<Movement>();
         audioSource = GetComponent<AudioSource>();
     }
 
     private void OnCollisionEnter(Collision collision) {
+
+        if(isTransitioning) { return; }
+
         switch(collision.gameObject.tag) {
             case "Friend":
                 Debug.Log("This thing is a friendly");
@@ -30,7 +36,7 @@ public class CollisionHandler : MonoBehaviour {
                 Debug.Log("You got fuel");
                 break;*/
             case "Finish":
-                LoadNextLevel();
+                SuccessSequence();
                 break;
             default:
                 CrashSequence();
@@ -38,6 +44,7 @@ public class CollisionHandler : MonoBehaviour {
         }
     }
     void SuccessSequence() {
+        isTransitioning = true;
         audioSource.Stop();
         movementComponent.enabled = false;
         audioSource.PlayOneShot(successSFX);
@@ -45,6 +52,7 @@ public class CollisionHandler : MonoBehaviour {
     }
 
     void CrashSequence() {
+        isTransitioning = true;
         audioSource.Stop();
         movementComponent.enabled = false;
         audioSource.PlayOneShot(crashSFX);
