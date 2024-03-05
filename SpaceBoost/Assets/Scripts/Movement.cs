@@ -1,15 +1,24 @@
 using UnityEngine;
 
 public class Movement : MonoBehaviour {
+
+    // PARAMETERS - for tuning, in editor
     [SerializeField]
     float mainThrust = 100f;
 
     [SerializeField]
     float rotationThrust = 100f;
 
+    [SerializeField]
+    AudioClip mainEngine;
+
+    // CACHE - references
     Rigidbody rb;
     AudioSource audioSource;
 
+    // STATE - private instance 
+
+    // METHODS
     void Start() {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
@@ -29,7 +38,7 @@ public class Movement : MonoBehaviour {
 
             // Playing SFX
             if (!audioSource.isPlaying) {
-                audioSource.Play();
+                audioSource.PlayOneShot(mainEngine);
             }
         }
         else {
