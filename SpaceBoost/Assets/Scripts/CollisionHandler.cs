@@ -12,6 +12,11 @@ public class CollisionHandler : MonoBehaviour {
     [SerializeField]
     private AudioClip crashSFX;
 
+    [SerializeField]
+    private ParticleSystem successParticles;
+    [SerializeField]
+    private ParticleSystem crashParticles;
+
     // CACHE - references
     private Movement movementComponent;
     private AudioSource audioSource;
@@ -46,6 +51,8 @@ public class CollisionHandler : MonoBehaviour {
     void SuccessSequence() {
         isTransitioning = true;
         audioSource.Stop();
+        successParticles.Play();
+
         movementComponent.enabled = false;
         audioSource.PlayOneShot(successSFX);
         Invoke("LoadNextLevel", levelLoadDelay);
@@ -54,6 +61,8 @@ public class CollisionHandler : MonoBehaviour {
     void CrashSequence() {
         isTransitioning = true;
         audioSource.Stop();
+        crashParticles.Play();
+
         movementComponent.enabled = false;
         audioSource.PlayOneShot(crashSFX);
         Invoke("ReloadLevel", levelLoadDelay);
